@@ -12,10 +12,14 @@ export const registerUser = async (user: RegisterUserDTO) => {
         u.nome = user.nome;
         u.annoNascita = user.annoNascita;
         u.genere = user.genere;
+        u.immagine = user.immagine;
+        u.email = user.email;
+        u.password = user.password;
 
         return await u.save();
     } catch (error) {
         console.log(error);
+        throw error;
     }
     finally {
         await mongoose.disconnect();

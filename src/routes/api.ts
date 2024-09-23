@@ -11,9 +11,13 @@ router.get("/", (req: Request, res: Response) => {
 router.post("/register", async (req: Request, res: Response) => {
     const user: RegisterUserDTO = req.body;
 
-    await db.registerUser(user);
+    try {
+        const r = await db.registerUser(user);
 
-    res.json({ message: "Registrazione avvenuta con successo" });
+        res.json({ message: "Registrazione avvenuta con successo" });
+    } catch (error: any) {
+        res.status(400).json({ message: error._message });
+    }
 });
 
 router.get("/users", (req: Request, res: Response) => {

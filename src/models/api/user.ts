@@ -1,5 +1,8 @@
 export interface RegisterUserDTO {
     nome: string,
     annoNascita: number,
-    genere: string
+    genere: string,
+    immagine: string,
+    email: string,
+    password: string,
 }
