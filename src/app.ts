@@ -12,10 +12,12 @@ const port = Number(process.env.PORT) || 3000;
 
 // log richieste su DB? Custom Google Analytics? Perchè no
 
-app.use(cors()); // ??????? cos'è?
+app.use(cors()); // consideriamo valide le richieste ajax da qualsiasi origin (dominio es: localhost:4200, www.larepubblica.it)
 
 // logging middleware
 app.use(morgan("tiny"));
+
+app.use(express.static("public"));
 
 app.use(express.json());
 

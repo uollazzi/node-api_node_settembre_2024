@@ -4,6 +4,10 @@ import { RegisterUserDTO } from "../models/api/user";
 
 const router = Router();
 
+router.get("/", (req: Request, res: Response) => {
+    res.json({ message: "Ciao sono il server!" });
+});
+
 router.post("/register", async (req: Request, res: Response) => {
     const user: RegisterUserDTO = req.body;
 
