@@ -25,3 +25,35 @@ export const registerUser = async (user: RegisterUserDTO) => {
         await mongoose.disconnect();
     }
 }
+
+export const getUserByEmail = async (email: string) => {
+    try {
+        await mongoose.connect(process.env.MONGODB_CONNECTION_STRING!, { dbName: DB_NAME });
+
+        const u = await UserModel.findOne({ email: email });
+
+        return u;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    finally {
+        await mongoose.disconnect();
+    }
+}
+
+export const getUserById = async (id: string) => {
+    try {
+        await mongoose.connect(process.env.MONGODB_CONNECTION_STRING!, { dbName: DB_NAME });
+
+        const u = await UserModel.findById(id);
+
+        return u;
+    } catch (error) {
+        console.log(error);
+        throw error;
+    }
+    finally {
+        await mongoose.disconnect();
+    }
+}
