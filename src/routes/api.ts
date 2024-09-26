@@ -43,7 +43,7 @@ router.post("/register", async (req: Request, res: Response) => {
 
         res.json({ message: "Registrazione avvenuta con successo" });
     } catch (error: any) {
-        res.status(400).json({ message: error._message });
+        res.status(500).json({ message: error._message });
     }
 });
 

@@ -69,7 +69,7 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
         res.json({ message: "Registrazione avvenuta con successo" });
     }
     catch (error) {
-        res.status(400).json({ message: error._message });
+        res.status(500).json({ message: error._message });
     }
 }));
 router.post("/upload-image", upload.single("file"), (req, res) => __awaiter(void 0, void 0, void 0, function* () {
