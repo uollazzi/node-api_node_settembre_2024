@@ -1,5 +1,4 @@
 import { Request, Response, Router } from "express";
-import fs from "node:fs";
 
 const router = Router();
 

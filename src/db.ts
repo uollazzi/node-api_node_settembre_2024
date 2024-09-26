@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import { UserModel } from "./models/db/user";
+import { IUser, UserModel } from "./models/db/user";
 import { RegisterUserDTO } from "./models/api/user";
 
 const DB_NAME = "finder";

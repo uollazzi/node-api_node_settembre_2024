@@ -38,8 +38,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const db = __importStar(require("../db"));
 const node_path_1 = __importDefault(require("node:path"));
-const router = (0, express_1.Router)();
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const multer_1 = __importDefault(require("multer"));
+const router = (0, express_1.Router)();
 const storage = multer_1.default.diskStorage({
     destination(req, file, callback) {
         callback(null, "public/uploads");
@@ -67,6 +68,63 @@ router.post("/register", (req, res) => __awaiter(void 0, void 0, void 0, functio
         }
         const r = yield db.registerUser(user);
         res.json({ message: "Registrazione avvenuta con successo" });
+    }
+    catch (error) {
+        res.status(500).json({ message: error._message });
+    }
+}));
+router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const login = req.body;
+    try {
+        const user = yield db.getUserByEmail(login.email);
+        if (!user) {
+            res.status(404).json({ message: "Utente non trovato" });
+            return;
+        }
+        if (user.password != login.password) {
+            res.status(404).json({ message: "Password non corretta" });
+            return;
+        }
+        const token = jsonwebtoken_1.default.sign({
+            id: user._id,
+            email: user.email,
+            nome: user.nome
+        }, process.env.JWT_SECRET, { expiresIn: "1d" });
+        const loggedUser = {
+            token: token,
+            user: {
+                email: user.email,
+                immagine: user.immagine,
+                id: user._id.toString(),
+                nome: user.nome,
+            }
+        };
+        res.json(loggedUser);
+    }
+    catch (error) {
+        res.status(500).json({ message: error._message });
+    }
+}));
+// rotta protetta (solo se in possesso di un valido jwt)
+router.get("/area-riservata", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const authHeader = req.headers.authorization;
+        if (!authHeader) {
+            res.status(400).json({ message: "JWT mancante" });
+            return;
+        }
+        const token = authHeader.split(' ')[1];
+        //Authorization: 'Bearer TOKEN'
+        if (!token) {
+            res.status(403).json({
+                message: "Token non valido"
+            });
+            return;
+        }
+        //Decoding the token
+        const decodedToken = jsonwebtoken_1.default.verify(token, process.env.JWT_SECRET);
+        // const u = await db.getUserById(decodedToken.id)
+        res.status(200).json(decodedToken);
     }
     catch (error) {
         res.status(500).json({ message: error._message });
