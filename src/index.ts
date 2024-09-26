@@ -17,7 +17,7 @@ app.use(cors()); // consideriamo valide le richieste ajax da qualsiasi origin (d
 // logging middleware
 app.use(morgan("tiny"));
 
-app.use(express.static("public"));
+app.use(express.static("../public"));
 
 app.use(express.json());
 
